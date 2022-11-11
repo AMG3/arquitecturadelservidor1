@@ -1,4 +1,8 @@
 import config from "../config/config.js";
+import UserMongoDao from "./usersMongo.dao.js";
+import mongoose from "mongoose";
+import MongoClient from "./MongoClient.js";
+
 const PERSISTENCE = config.app.PERSISTENCE;
 export default class PersistenceFactory {
   static getPersistence = async () => {
@@ -10,6 +14,16 @@ export default class PersistenceFactory {
       case "FILESYSTEM":
         let { default: UserDaoFile } = await import("./usersFile.dao.js");
         return new UserDaoFile();
+      case "MONGO":
+        const connection = MongoClient.getInstance();
+        // process.env.MONGODB_URI
+        // , (error) =>
+        // console.log("conectado")
+
+        let { default: UserDaoMongo } = await import("./usersMongo.dao.js");
+        return {
+          users: new UserDaoMongo(),
+        };
     }
   };
 }
