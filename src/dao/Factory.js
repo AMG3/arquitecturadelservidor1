@@ -16,9 +16,8 @@ export default class PersistenceFactory {
         return new UserDaoFile();
       case "MONGO":
         const connection = MongoClient.getInstance();
-        // process.env.MONGODB_URI
-        // , (error) =>
-        // console.log("conectado")
+       
+      
 
         let { default: UserDaoMongo } = await import("./usersMongo.dao.js");
         return {
